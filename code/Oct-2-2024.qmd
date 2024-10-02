@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+format: html
+---
+
+Setup
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+```
+
