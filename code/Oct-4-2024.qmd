@@ -1,0 +1,89 @@
+---
+title: "Oct-4-2024"
+format: html
+---
+Setup
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(here)
+```
+
+Read in Dataset
+```{r}
+drugs <- read.csv(here("data", "drug_resistance.csv"))
+
+str(drugs)
+glimpse(drugs)
+```
+
+Turn treatment variable into a factor
+```{r}
+drugs$Treatment <- as.factor(drugs$Treatment)
+levels(drugs$Treatment) # Treatment has 9 factors when there should be 3
+```
+
+Fix treatment variable
+  - Find the rows that have any version of "control"
+  - Use the `which` function
+```{r}
+fix <- which(drugs$Treatment %in% c("cantrol", "control", "Control")) # identify the rows that need repair
+
+drugs$Treatment[fix] <- "control" # assigns all control rows as the same character: "control"
+
+levels(drugs$Treatment) # we see that it did not fix the levels
+
+drugs$Treatment <- factor(drugs$Treatment) # this tells R to re-evaluate the levels of the factor variable
+
+levels(drugs$Treatment) 
+```
+
+Fix drug 2 variable
+```{r}
+fix2 <- which(drugs$Treatment %in% c("drug x 2", "Drugx2", "drug2"))
+
+drugs$Treatment[fix2] <- "drug2"
+
+drugs$Treatment <- factor(drugs$Treatment)
+
+levels(drugs$Treatment)
+```
+
+Fix drug 3 variable
+```{r}
+fix3 <- which(drugs$Treatment %in% c("drug x 3", "Drug x 3", "drug3"))
+
+drugs$Treatment[fix3] <- "drug3"
+
+drugs$Treatment <- factor(drugs$Treatment)
+
+levels(drugs$Treatment)
+```
+
+Fix the tech name variable
+```{r}
+drugs$tech.name <- as.factor(drugs$tech.name)
+```
+
+Fix Brian's name
+```{r}
+fix_brian <- which(drugs$tech.name %in% c("brian", "Brian", "brain"))
+
+drugs$tech.name[fix_brian] <- "Brian"
+
+drugs$tech.name <- factor(drugs$tech.name)
+
+levels(drugs$tech.name)
+```
+
+Fix Becca's name
+```{r}
+fix_becca <- which(drugs$tech.name %in% c("becca", "Becca"))
+
+drugs$tech.name[fix_becca] <- "Becca"
+
+drugs$tech.name <- factor(drugs$tech.name)
+
+levels(drugs$tech.name)
+```
+
