@@ -34,3 +34,37 @@ tomatoes$Treatment[fix_treatment1] <- "Fertilizer"
 tomatoes$Treatment <- factor(tomatoes$Treatment)
 ```
 
+
+Now look at this summary function
+```{r}
+test <- c(2, 4, 6, 8, 10, 12, 14, 16, 18, 20)
+summary(test)
+```
+
+Exercise 3:
+ - calculate the min, max, mean, median, quartiles by hand
+```{r}
+grades <- c(90,94,96,90,84,86)
+```
+  - min = 84
+  - max = 96
+  - mean = (84+86+90+90+94+96)/6 = 90
+  - median = 90+90/2 = 90
+  - 1st quartile = (*.25)+2 = 87
+  - 3rd quartile = 20-(*.25)
+  
+check your work
+```{r}
+summary(grades)
+```
+
+```{r}
+quantile(grades, probs = c(0, .25, .5, .75, 1))
+```
+
+Exercise 4:
+1)
+```{r}
+tomatoes %>% select(3)
+```
+
