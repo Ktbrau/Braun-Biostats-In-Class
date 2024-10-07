@@ -1,0 +1,36 @@
+---
+title: "Oct 7th 2024"
+format: html
+---
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
+
+Exercise 1:
+```{r}
+tomatoes <- read.csv(here("data", "tomato_data.csv"))
+glimpse(tomatoes)
+```
+  - fix factor levels of control
+  - use which to return row numbers
+```{r}
+tomatoes$Treatment <- as.factor(tomatoes$Treatment)
+
+fix_treatment <- which(tomatoes$Treatment %in% c("Control", "control"))
+
+tomatoes$Treatment[fix_treatment] <- "Control"
+
+tomatoes$Treatment <- factor(tomatoes$Treatment)
+```
+  - fix factor levels of fertilizer
+```{r}
+fix_treatment1 <- which(tomatoes$Treatment == "fertilizer")
+
+tomatoes$Treatment[fix_treatment1] <- "Fertilizer"
+
+tomatoes$Treatment <- factor(tomatoes$Treatment)
+```
+
