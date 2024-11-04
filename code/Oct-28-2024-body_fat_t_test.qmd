@@ -29,22 +29,32 @@ Use the information you learned from reading chapter 5 and doing homework 21 to 
 1.  Plot the data and look at expected relationships
 ```{r}
 ggplot(bmi, aes(body_fat_percent)) +
-  geom_histogram(binwidth=10) +
-  facet_wrap(bmi$gender)
+  geom_histogram(binwidth=4) +
+  facet_wrap(bmi$gender, ncol = 1)
 ```
 
 2.  Calculate the mean and standard deviation for the data and examine the resulting output.
 ```{r}
 bmi_data <- bmi |> group_by(gender) |>
-  summarise(mean = mean(body_fat_percent),
-            sd = sd(body_fat_percent))
+  summarise(mean = mean(body_fat_percent, na.rm = TRUE),
+            sd = sd(body_fat_percent, na.rm = TRUE))
 ```
 
 3.  Discuss with your partner:
     -   Review in the book: What are the assumptions about the data appropriate for a t-test? When you examine the plots and summary data, do they appear to meet those assumptions?
-    -   Based on examination of the plots and summary data, do you expect that there is a statistically significant difference in mean body fat percentage between males and females in this sample?
+
+Equal variance in 2 groups, independence, and normalcy of residuals. This ensures that the results returned by the model are reliable. I think that they appear to meet this assumption
+
+  - Based on examination of the plots and summary data, do you expect that there is a statistically significant difference in mean body fat percentage between males and females in this sample?
+  
+  Yes, i expect there to be a significant difference between mean body fat percentage
+    
+    
 4.  Conduct a t-test and then interpret the results. What do they tell you about the null vs. alternative hypotheses?
 ```{r}
 t.test(body_fat_percent ~ gender, data = bmi)
+# t.test(response ~ predictor, data = data frame)
 ```
-There is a significant difference in the body fat percent between men and women who work out at this gym. We found significant evidence for the alt hypothesis.
+Men have significantly less body fat than women (t = 2.89, df = 20.96, p = .00932)
+
+df = sample size - response variables

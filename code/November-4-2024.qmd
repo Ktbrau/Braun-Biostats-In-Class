@@ -1,0 +1,72 @@
+---
+title: "4-November-2024"
+format: html
+editor: visual
+---
+
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+library(ggfortify)
+```
+
+import the data
+```{r}
+forest <- read.csv(here("data", "Forest_Tree_DBH_F21.csv"))
+
+forest$Forest <- as.factor(forest$Forest)
+```
+
+Question 1: Is there a difference in mean tree DBH between forests
+
+Question 2: If there is a difference, for which forest is there a difference?
+
+
+```{r}
+ggplot(forest, aes(x=Forest, y = DBH_cm)) +
+  geom_boxplot() +
+  coord_flip() +
+  geom_jitter(width=.1)
+```
+
+I do not think that there will be a difference between any 2 means
+
+create a lm:
+```{r}
+forest_model <- lm(DBH_cm ~ Forest, data = forest)
+```
+
+check assumptions
+```{r}
+autoplot(forest_model, smooth.colour=NA)
+```
+
+run ANOVA test:
+```{r}
+anova(forest_model)
+```
+
+check summary table
+```{r}
+summary(forest_model)
+```
+We cant see which forests are different from other forests, only which forests are different than degrasse
+
+
+```{r}
+library(multcomp)
+```
+
+Conduct a tukeys HSD test (runs every forest against every other forest)
+```{r}
+phc1 <- glht(forest_model, linfct = mcp(Forest="Tukey"))
+summary(phc1)
+```
+
+```{r}
+cld(phc1) # compact letter display
+# if groups share the same letter then they are not significantly different from each other
+```
+
+only south hammond and degrasse have a significant difference in mean DBH
