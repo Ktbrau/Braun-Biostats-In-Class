@@ -1,0 +1,50 @@
+---
+title: "Nov-20-2024"
+format: html
+editor: visual
+---
+Setup
+```{r}
+rm(list=ls())
+library(tidyverse)
+library(here)
+```
+
+Import data
+```{r}
+cams <- read.csv(here("data", "site_locations.csv"))
+
+species <- read.csv(here("data", "species_per_site.csv"))
+```
+
+
+## How to cast data frames between long and wide formats
+
+Use `pivot_wider()` to cast from long to wide
+```{r}
+sp_wide <- species |>
+  pivot_wider(names_from = Date, values_from = Num_species)
+# names_from is what the new columns names will be and values_from will be the new data points
+
+# NA values signify that there were no cameras out on those days
+```
+
+Use `pivot_longer()` to cast from wide to long
+```{r}
+sp_long <- sp_wide |>
+  pivot_longer(cols = c(`1-Jul-24`:`15-Jul-24`), names_to = "Date", values_to = "Num_species")
+# names_to moves all the columns into 1 column under "Date"
+# values_to moves all data values in df into 1 column under "num_species"
+```
+
+
+## Joining dataframes
+use join function
+
+```{r}
+cams_species <- full_join(species, cams)
+
+# first data frame gets added to the second one
+# adds latitude and longitude to cams data
+```
+
